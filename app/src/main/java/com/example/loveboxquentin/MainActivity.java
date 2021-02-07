@@ -40,19 +40,35 @@ public class MainActivity extends AppCompatActivity {
         boolean isInserted2 = db.insertDataMatch("La remarque qui revenait tout le temp sur mes bulletins scolaire  ?");
         boolean isInserted3 = db.insertDataMatch("Quel est le mot ou l'expression que j'utilise tout le temps ?");
 
-        Cursor data = db.getAllData();
+        Cursor data = db.getAllQuestion();
+        StringBuffer buffer = new StringBuffer();
         if(data.getCount() == 0)
         {
             Toast.makeText(MainActivity.this,"Error, No Data Found !!",Toast.LENGTH_LONG).show();
         }
-        else if(data.getCount() == 3) {
-            question1.setText(data.getString(0));
-            question2.setText(data.getString(1));
-            question3.setText(data.getString(2));
+        else if(data.getCount() == 3 ){
+            //buffer.append(data.getString(0));
+            //Toast.makeText(MainActivity.this, buffer.toString(), Toast.LENGTH_LONG).show();
+
+            String[] listeQuestion;
+            listeQuestion = new String[data.getCount()];
+            int i = 0;
+
+            while(data.moveToNext())
+            {
+                listeQuestion[i] = data.getString(0);
+                i++;
+            }
+            question1.setText(listeQuestion[0]);
+            question2.setText(listeQuestion[1]);
+            question3.setText(listeQuestion[2]);
         }
         else
         {
-            Toast.makeText(MainActivity.this,"pas trois données !!",Toast.LENGTH_LONG).show();
+            //Toast.makeText(MainActivity.this,"pas trois données !!",Toast.LENGTH_LONG).show();
+            buffer.append("il y a " + data.	getCount() + "données");
+            Toast.makeText(MainActivity.this, buffer.toString(), Toast.LENGTH_LONG).show();
+
         }
 
     }

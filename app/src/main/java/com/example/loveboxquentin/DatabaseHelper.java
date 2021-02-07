@@ -80,6 +80,14 @@ public class DatabaseHelper extends SQLiteOpenHelper {
         return result;
     }
 
+    //Récupération de toutes les questions
+    public Cursor getAllQuestion()
+    {
+        SQLiteDatabase db = this.getReadableDatabase();
+        Cursor result = db.rawQuery("SELECT " + FeedEntry.COLUMN_MATCH_QUESTION + " FROM " + TABLE_QUESTION_NAME, null);
+        return result;
+    }
+
 
     //Récupération des 5 derniers matchs pour MainActivity
     //A REMPLIR !!!
