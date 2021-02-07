@@ -5,31 +5,81 @@ import android.widget.Button;
 import android.widget.TextView;
 import android.view.View;
 import android.content.Intent;
+import android.database.sqlite.SQLiteDatabase;
+import android.database.Cursor;
+import android.widget.Toast;
 
 import androidx.appcompat.app.AppCompatActivity;
 
 public class MainActivity extends AppCompatActivity {
 
     Button buttonQuestion;
+    DatabaseHelper db;
+    TextView question1, question2, question3;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
-        buttonQuestion = findViewById(R.id.buttonQuestion);
-    }
+        buttonQuestion = (Button) findViewById(R.id.buttonQuestion);
+        question1 = findViewById(R.id.textView);
+        question2 = findViewById(R.id.question2);
+        question3 = findViewById(R.id.question3);
+        //BDD
+        db = new DatabaseHelper(this);
 
+        buttonQuestion.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                openNewActivity();
+            }
+        });
 
-    public void launchSecondActivity(View view) {
-        switch (view.getId()) {
+        boolean isInserted1 = db.insertDataMatch("Je chausse du combien ?");
+        boolean isInserted2 = db.insertDataMatch("La remarque qui revenait tout le temp sur mes bulletins scolaire  ?");
+        boolean isInserted3 = db.insertDataMatch("Quel est le mot ou l'expression que j'utilise tout le temps ?");
 
-            case R.id.buttonQuestion:
-                Intent i = new Intent(this, Question.class);
-                startActivity(i);
-                break;
-
-            default:
-                //Envoyer l'id du match dans un extra en fonction du bouton cliqué
+        Cursor data = db.getAllData();
+        if(data.getCount() == 0)
+        {
+            Toast.makeText(MainActivity.this,"Error, No Data Found !!",Toast.LENGTH_LONG).show();
         }
+        else if(data.getCount() == 3) {
+            question1.setText(data.getString(0));
+            question2.setText(data.getString(1));
+            question3.setText(data.getString(2));
+        }
+        else
+        {
+            Toast.makeText(MainActivity.this,"pas trois données !!",Toast.LENGTH_LONG).show();
+        }
+
     }
+
+
+    public void openNewActivity() {
+        Intent i = new Intent(this, Question.class);
+        startActivity(i);
+    }
+
+    /*public void affichageDB(View view)
+    {
+        Cursor data = db.getAllData();
+        if(data.getCount() == 0)
+        {
+            Toast.makeText(MainActivity.this,"Error, No Data Found !!",Toast.LENGTH_LONG).show();
+            return;
+        }
+        StringBuffer buffer = new StringBuffer();
+
+        while(data.moveToNext())
+        {
+            buffer.append("question : " + data.getString(1));
+        }
+        Toast.makeText(MainActivity.this, buffer.toString(), Toast.LENGTH_LONG).show();
+    }*/
+
+
+
 }
