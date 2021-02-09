@@ -28,6 +28,7 @@ public class MainActivity extends AppCompatActivity {
         question3 = findViewById(R.id.question3);
         //BDD
         db = new DatabaseHelper(this);
+        int nombreQuestion = 3;
 
         buttonQuestion.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -36,20 +37,20 @@ public class MainActivity extends AppCompatActivity {
             }
         });
 
-        boolean isInserted1 = db.insertDataMatch("Je chausse du combien ?");
-        boolean isInserted2 = db.insertDataMatch("La remarque qui revenait tout le temp sur mes bulletins scolaire  ?");
-        boolean isInserted3 = db.insertDataMatch("Quel est le mot ou l'expression que j'utilise tout le temps ?");
-
         Cursor data = db.getAllQuestion();
         StringBuffer buffer = new StringBuffer();
         if(data.getCount() == 0)
         {
             Toast.makeText(MainActivity.this,"Error, No Data Found !!",Toast.LENGTH_LONG).show();
+            boolean isInserted1 = db.insertDataMatch("Je chausse du combien ?");
+            boolean isInserted2 = db.insertDataMatch("La remarque qui revenait tout le temp sur mes bulletins scolaire  ?");
+            boolean isInserted3 = db.insertDataMatch("Quel est le mot ou l'expression que j'utilise tout le temps ?");
         }
-        else if(data.getCount() == 3 ){
-            //buffer.append(data.getString(0));
-            //Toast.makeText(MainActivity.this, buffer.toString(), Toast.LENGTH_LONG).show();
 
+        data = db.getAllQuestion();
+
+        if(data.getCount() == nombreQuestion )
+        {
             String[] listeQuestion;
             listeQuestion = new String[data.getCount()];
             int i = 0;
@@ -65,10 +66,8 @@ public class MainActivity extends AppCompatActivity {
         }
         else
         {
-            //Toast.makeText(MainActivity.this,"pas trois données !!",Toast.LENGTH_LONG).show();
             buffer.append("il y a " + data.	getCount() + "données");
             Toast.makeText(MainActivity.this, buffer.toString(), Toast.LENGTH_LONG).show();
-
         }
 
     }
