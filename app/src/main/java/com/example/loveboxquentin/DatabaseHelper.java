@@ -89,17 +89,19 @@ public class DatabaseHelper extends SQLiteOpenHelper {
         return result;
     }
 
+    /*
     //Récupération de toutes les questions non répondues
     public Cursor getQuestionNotDone()
     {
-        /**/
+       
     }
 
     //Récupération de toutes les questions répondu
     public Cursor getQuestionDone()
     {
-        /**/
+
     }
+    */
 
     //changement de la question de non répondu à répondu
     public boolean setQuestionDone(int idQuestion, String question)
@@ -115,7 +117,7 @@ public class DatabaseHelper extends SQLiteOpenHelper {
         String[] whereArgs;
         whereArgs = new String[1];
 
-        whereArgs[0] = question
+        whereArgs[0] = question;
 
         int result = db.update(TABLE_QUESTION_NAME, values,whereClause, whereArgs);
 
