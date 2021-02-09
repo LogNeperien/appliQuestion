@@ -55,6 +55,7 @@ public class DatabaseHelper extends SQLiteOpenHelper {
                     FeedEntry.COLUMN_MATCH_BOOL + " INTEGER) ";
 
 
+
     //Insertion dans la table question
     public boolean insertDataMatch(String question)
     {
@@ -88,6 +89,40 @@ public class DatabaseHelper extends SQLiteOpenHelper {
         return result;
     }
 
+    //Récupération de toutes les questions non répondues
+    public Cursor getQuestionNotDone()
+    {
+        /**/
+    }
+
+    //Récupération de toutes les questions répondu
+    public Cursor getQuestionDone()
+    {
+        /**/
+    }
+
+    //changement de la question de non répondu à répondu
+    public boolean setQuestionDone(int idQuestion, String question)
+    {
+        int booleanQuestion = 0;
+        SQLiteDatabase db = this.getWritableDatabase();
+
+        ContentValues values = new ContentValues();
+        values.put(FeedEntry.COLUMN_MATCH_QUESTION, question);
+        values.put(FeedEntry.COLUMN_MATCH_BOOL, 1);
+
+        String whereClause = "WHERE " + FeedEntry.COLUMN_MATCH_QUESTION + "IS ?s";
+        String[] whereArgs;
+        whereArgs = new String[1];
+
+        whereArgs[0] = question
+
+        int result = db.update(TABLE_QUESTION_NAME, values,whereClause, whereArgs);
+
+        if(result != 1) { return false; }
+        else { return true; }
+
+    }
 
     //Récupération des 5 derniers matchs pour MainActivity
     //A REMPLIR !!!
